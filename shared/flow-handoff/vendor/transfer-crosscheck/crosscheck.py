@@ -17,6 +17,19 @@ LIMITATION = ("Agreement corroborates two provider observations; it does not pro
               "completeness, provider independence, finality, or current balances.")
 
 
+def same_transfers(actual, expected):
+    """Match the decoded flat event schema, including exact JSON value types.
+
+    validate_logs bounds the expected event count and emits only scalar fields.
+    Check that fixed structure directly; never recurse into untrusted values.
+    """
+    return (type(actual) is list and len(actual) == len(expected)
+            and all(type(got) is dict and got.keys() == want.keys()
+                    and all(type(got[key]) is type(value) and got[key] == value
+                            for key, value in want.items())
+                    for got, want in zip(actual, expected)))
+
+
 def checked(capture):
     """Rebuild transfers from raw evidence before trusting a saved summary."""
     if not isinstance(capture, dict):
@@ -57,7 +70,8 @@ def checked(capture):
         for anchor in anchors:
             if event["block"] == anchor["number"] and event["block_hash"] != anchor["hash"]:
                 raise window.RpcError("event disagrees with boundary anchor")
-    if (capture.get("transfers") != events or capture["transfer_count"] != len(events)
+    if (not same_transfers(capture.get("transfers"), events)
+            or capture["transfer_count"] != len(events)
             or capture["duplicate_count"] != duplicates):
         raise window.RpcError("capture summary disagrees with raw evidence")
     if "address_window_summary" in capture:

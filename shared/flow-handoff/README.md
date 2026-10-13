@@ -1,5 +1,29 @@
 # Flow handoff
 
+## Gathering 12 update
+
+The bundled Line 4 transfer validator now matches the current native version.
+It rejects a saved `true` or floating-point value where a raw-log-derived event
+requires an integer, before the flow report is built. The wrapper's independent
+canonical JSON comparison remains as a second check. Its 14 integration tests
+pass with the new validator.
+
+A fresh read-only dRPC observation of the real ZTO transfer window at blocks
+26177298–26177309 was captured on 2026-10-13. The exact source bytes are in
+`examples/round-12-zto-window.json`; the portable archive is
+`examples/round-12-zto-flows.zip`. Three events and three directed pairs passed
+native Line 4 validation, this wrapper's recomputation, and Line 2's current
+handoff review for integrity, reproduction, and filename portability. Try the
+complete received archive offline:
+
+```sh
+python3 -B shared/flow-handoff/flow_handoff.py check shared/flow-handoff/examples/round-12-zto-flows.zip
+```
+
+This provider observation is dated evidence, not a balance, a swap, proof of
+complete logs, or an authenticated sender. `PROVENANCE.json` gives exact source
+and archive digests. No line source was edited.
+
 Give another worker a small, reproducible archive of a bounded ERC-20 window
 and its directed sender/recipient totals. This joins Line 4's counterparty
 reader and raw-log validator with Line 2's deterministic HANDOFF v1 writer

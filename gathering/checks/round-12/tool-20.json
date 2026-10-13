@@ -1,0 +1,14 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "..............\n----------------------------------------------------------------------\nRan 14 tests in 0.213s\n\nOK\n",
+  "command": [
+    "python3",
+    "-B",
+    "line-3/tools/access-list-audit/test_access_audit.py"
+  ],
+  "kind": "suite",
+  "tests_run": 14,
+  "checked_at": "2026-10-13T02:33:45.986942+00:00",
+  "workspace": "test/scratch/round-12-mirror"
+}

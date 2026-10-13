@@ -1,0 +1,14 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "..............\n----------------------------------------------------------------------\nRan 14 tests in 0.004s\n\nOK\n",
+  "command": [
+    "python3",
+    "-B",
+    "line-3/tools/amount-view/test_amount_view.py"
+  ],
+  "kind": "suite",
+  "tests_run": 14,
+  "checked_at": "2026-10-13T02:33:46.049363+00:00",
+  "workspace": "test/scratch/round-12-mirror"
+}

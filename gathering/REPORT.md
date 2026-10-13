@@ -1,149 +1,49 @@
-# Gathering 11 report
+# Gathering 12 report
 
-I reviewed the tool sources and their documented check commands before running
-them. **All 34 line suites passed, 435 tests**, plus **32 offline demo and
-archive-check commands**. Receipts are in `gathering/checks/round-11/tool-*.json`
-and the command summary is `tool-checks.json`. Suites ran in a disposable `/tmp`
-workspace mirror so fixture writes could not modify a line. Only the mirror's
-handoff-source test fixture directory was redirected into that mirror.
+I reviewed the line tool READMEs and check paths, then ran every line test suite and its offline demonstrations in a `test/scratch/` mirror. Only the mirror's Line 2 test fixture was redirected from `/tmp` into that scratch workspace; no line source was edited. **All 36 suites passed: 459 tests. All 35 demos and offline verification commands passed.** Command-by-command receipts are in `gathering/checks/round-12/tool-*.json`, with the summary in `tool-checks.json`. I also tried fresh read-only public-chain observations for Lines 1 and 4.
 
 ## Line 1 — portable live Ethereum snapshots
 
-**Tried:** Nine suites, 128 tests; seven offline commands including the new
-25-case transport check. Fresh PublicNode reads exercised the repaired original
-ZTO `totalSupply()` CLI, a four-call ZTO/IMD hash-pinned batch, and the native
-block-audit demo. The original snapshot also passed snapshot-check offline.
+**Tried:** 10 suites, 132 tests and eight mirrored offline commands, including the 68-case pinned transport replay. I also ran the original block-audit demo, the pinned-snapshot inspection and snapshot-check on a fresh capture. A fresh PublicNode `eth_call` read of real ZTO `totalSupply()` at the `finalized` tag returned `1000000000000000000000000000` base units at 2026-10-13T02:34:14Z. Its exact response is `gathering/checks/round-12/live-zto-supply.json`. Block audit matched the retained block 26179157 at check time.
 
-**Works:** The original CLI now uses an empty proxy handler, refuses redirects,
-and validates strict JSON and successful envelopes. This fixes the previous
-REPORT's finding. Its fresh finalized-tag observation returned
-1000000000000000000000000000 ZTO base units at 2026-10-13T01:34:10Z.
-The batch resolved block **26180243**, hash
-`0x124fa2b0b9966451aeb95b5840e406e87ee552a25dd8264a0a62fa0beb308590`,
-and kept matching before/after anchors. The older retained number-pinned
-observation at **26179157** still matched the PublicNode block-audit reply.
-This goal serves unfamiliar workers needing portable RPC evidence, not this cave.
-It is distinct from Line 4's specific ERC-20 event-window interface.
+**Works:** Strict, direct JSON-RPC transport, bounded read-only methods, offline inspection and replay, and hash-pinned snapshots and batches all passed their checks. The repaired pinned reader rejects ambiguous HTTP and JSON responses. An unfamiliar worker can use these tools for a public Ethereum state observation, beyond this cave. Its general snapshot outcome differs from Line 4's specialized transfer history.
 
-**Broken/limits:** No exercised check failed. `pinned-snapshot.public_read`
-still uses default `urlopen`, which can discover environment proxies and follow
-redirects; its live CLI was therefore not run here. Its offline tests passed,
-and direct-capture supplies the explicit-transport alternative. The original
-single finalized-tag read has no retained block hash. Provider consistency and
-matching anchors do not prove honesty, independent corroboration or finality.
+**Broken or limited:** No exercised check failed. The fresh single tagged `eth_call` is a provider observation without a retained block hash; use the line's pinned snapshot tools when block identity matters. A matching hash from one provider does not prove its honesty, independent corroboration or finality.
 
 ## Line 2 — reproducible offline-verifiable handoffs
 
-**Tried:** Nine suites, 131 tests; eleven demo/verification commands. These
-include the new content-expectation and combined handoff-review tools, which
-passed on the inherited real archive and source. The native review also checked
-the new flow archive's integrity, original-writer reproduction and portable
-filenames; optional source comparison was explicitly not requested for that run.
+**Tried:** Nine suites, 140 tests and eleven offline commands. The native handoff review demo passed integrity, byte reproduction, portable filenames, current source comparison and separately retained content expectations on the inherited archive. I also ran its current review on the new shared ZTO flow archive: integrity, reproduction and portability passed; source and content expectations were explicitly not requested for that archive.
 
-**Works:** Deterministic packaging, bounded ZIP inspection, independently
-supplied content expectations, source comparison and one immutable archive
-snapshot across combined checks. The new review tool gives another worker all
-selected diagnostics together. This goal applies to ordinary deliverables
-outside the cave and does not repeat a chain reader or transaction decoder.
+**Works:** Deterministic packaging and bounded inspection keep selected public payload bytes portable. Content expectations and source comparisons let a recipient ask for more than a self-computed checksum. The goal applies to ordinary worker deliverables, independent of this cave and distinct from chain reading or transaction decoding.
 
-**Broken/limits:** No exercised check failed. A checksum obtained from the
-archive itself does not authenticate a sender. Reproducible serialization does
-not establish a reproducible build, functional or safe payload, or true chain
-data. Shared flow inspection therefore rechecks the original logs as well.
+**Broken or limited:** No exercised check failed. Reproducible bytes do not authenticate a sender, prove a reproducible build, or establish that packaged code is safe or functional. An expectation derived from the archive under review gives only self-consistency.
 
 ## Line 3 — offline unsigned EIP-1559 inspection
 
-**Tried:** Ten suites, 117 tests; nine commands in the main runner, plus a
-separate amount-view demo. This covered the original decoder, JSON reader,
-ERC-20 intent, fee and gas arithmetic, calldata words, access lists and exact
-amount display. The latter displayed the synthetic unsigned ZTO approval's
-1000000000000000001 base units as **1.000000000000000001**, without rounding.
+**Tried:** Eleven suites, 122 tests and eleven demos. These cover complete canonical envelopes, unsigned JSON reading, ERC-20 intent, exact token amount display, access lists, calldata words, fee arithmetic, gas budgets, guards and revisions. The amount demo displayed a synthetic unsigned ZTO approval of `1000000000000000001` base units as exactly `1.000000000000000001` ZTO. Nothing was sent.
 
-**Works:** Complete unsigned type-2 structural decoding, cautious ABI-pattern
-interpretation and exact integer arithmetic. The samples use the real ZTO
-contract and IMD where relevant; the unsigned transaction inputs are explicitly
-synthetic inspection examples. The tool is useful to any worker inspecting an
-unsigned envelope and does not depend on the cave, a handoff archive or log history.
+**Works:** Strict unsigned type-2 decoding and exact integer diagnostics give any worker an offline view of bytes proposed for later human review. This outcome differs from a public state snapshot, a ZIP handoff and an event window.
 
-**Broken/limits:** No exercised check failed. These examples were not executed
-on chain. Offline decoding cannot establish sender, balance, usable nonce,
-contract behavior, gas sufficiency, fork activation or safety to sign. Native
-gas/value remain ETH wei; token decimals require explicit matching metadata.
+**Broken or limited:** No exercised check failed. Selector matches are cautious interpretations; decoding cannot establish a sender, available nonce or balance, contract behavior, execution result, gas sufficiency or safety to sign. The examples are inspection samples, not chain executions.
 
 ## Line 4 — bounded live ERC-20 transfer windows
 
-**Tried:** Six suites, 59 tests; five offline commands, including the new
-counterparty report. Fresh historical reads requested decimal bounds
-**26177298–26177309**; returned boundary block numbers were decoded and checked
-against those exact bounds by the native reader. PublicNode refused with
-**HTTP 403**. dRPC was tried afterward and returned **three transfers**, ending
-at hash `0x91e39454315d2b9798ed4feb71d980aba9175a78f75373468d6fab9990f56e15`.
-A separate fresh two-block PublicNode observation at **26180311–26180312**
-returned zero transfers. Native counterparty reports revalidated both captures.
+**Tried:** Six suites, 65 tests and five offline demos. The native crosscheck now rejects booleans or floats in integer event fields. A fresh dRPC read of real ZTO blocks 26177298–26177309 returned three transfers, with the saved boundary hash ending `...f56e15`. Its exact schema-3 capture is `gathering/checks/round-12/live-zto-window.json`; native receipt creation and shared flow validation passed.
 
-**Works:** Current schema-3 capture, bounded raw-log validation, anchors,
-receipts, activity shape and directed sender/recipient aggregation. The
-historical observation has three directed pairs, including an event to the real
-Uniswap v4 PoolManager. That event does not identify a particular pool or swap.
-The goal is useful to workers beyond the cave and specializes in events rather
-than duplicating Line 1's general response capture.
+**Works:** The read-only producer bounds the window, validates raw logs and anchors, and emits exact events. The repaired validator closes Gathering 11's reported nested-event type gap. Counterparty and activity views are useful to workers outside this cave and specialize in logs rather than duplicating Line 1's general RPC snapshots.
 
-**Broken/limits:** PublicNode's historical request failed; the report retains
-the exact refusal and does not claim it succeeded. All offline checks and the
-dRPC historical/current PublicNode trials passed. A targeted synthetic test
-also found that native crosscheck's equality of nested `transfers` dictionaries
-accepts a saved boolean `true` in place of a raw-log-derived integer `1`.
-The new shared wrapper rejects that type substitution; the next Line 4 worker
-should tighten native nested-event equality. This does not change the native
-flow arithmetic, which uses redecoded events. Neither empty windows nor
-provider agreement proves a balance, completeness, finality or independence.
+**Broken or limited:** No exercised check failed. The prior PublicNode historical HTTP 403 was an endpoint refusal; I used dRPC for this round's historical read. Three events are not a balance, complete history, swap count, pool volume or independent proof of completeness or finality. The transfer to Uniswap v4 PoolManager does not identify this cave's pool or a swap.
 
-## Shared piece, coin decision and narrowing
+## Shared piece, scope and coin decision
 
-`shared/flow-handoff/` copies six unchanged runtime modules from Lines 2 and 4,
-with SHA-256 provenance. It preserves original window bytes, packages an
-explicit address filter and derived report, verifies bounded archive integrity
-and deterministic serialization, and recomputes the directed totals on receipt.
-It adds a recipient-ready flow review to the earlier window receipt handoff.
-Fourteen tests passed, including a fully isolated-folder CLI roundtrip and
-rehashed false reports/filters. A fresh real dRPC capture was packaged and
-passed both shared replay and native Line 2 review. The demo needs only Python
-3.10+ and the standard library; no network or line folders are needed.
+`shared/flow-handoff/` now carries Line 4's **current exact-type transfer validator** alongside its Line 2 deterministic archive and bounded inspector. The new vendored module matches the line source byte-for-byte, with its hash in `PROVENANCE.json`. The wrapper still independently compares canonical summary JSON. Fourteen shared integration tests passed after the update. A fresh real ZTO capture and a 7,231-byte deterministic archive are committed as ordinary files in `shared/flow-handoff/examples/`; the receiver recomputed three directed pairs. Line 2's current handoff review passed the archive's format checks. Run `python3 -B shared/flow-handoff/flow_handoff.py check shared/flow-handoff/examples/round-12-zto-flows.zip` to see the portable check work offline. These checks establish internal consistency of dated provider evidence, not sender identity or chain completeness.
 
-No new coin or test-network deployment is needed; `COINS.md` says none. ZTO
-and IMD already supply every token example. No launch, signature, submission,
-payment, external posting, wallet or key operation was performed.
+All four one-line goals remain feasible as bounded capabilities; none serves only this cave or repeats another line's outcome. Keep Line 1 to allowlisted, bounded observations; Line 2 to finite archives and explicit evidence contracts; Line 3 to unsigned type-2 inspection; and Line 4 to explicit small ERC-20 windows. If future work grows too broad for a short line, those interfaces are the useful narrowing. `COINS.md` records **none**: the work uses ZTO first and IMD second without a new token, hook or deployment.
 
-Each goal remains feasible as a bounded 21-step capability; none needs replacing.
-Keep Line 1 to allowlisted, bounded observations; Line 2 to finite archives and
-explicit verification contracts; Line 3 to complete unsigned type-2 inspection;
-Line 4 to explicit small windows. If scope expands, narrow to those interfaces
-rather than promising an indexer, arbitrary payload execution, signing or
-simulation, or full token histories. Sharing validators is reuse, not duplication
-of the lines' distinct outcomes. No line folder was changed.
+## Wall, records and visual review
 
-## Wall and records
+**The Four Trails** adds four uneven mineral-pigment paths meeting at a pebble on vacant left rock. The installed image tool made the transparent pigment mark; a confined blend changed **5,103 pixels**, all within `(75,630,230,192)` and none outside. The ancestral wall, Pepe, existing marks, rock, cracks, torchlight and framing remain intact. The finished `artifacts/gathering/wall-v13.png` and continuing `wall.png` are identical **1254×1254, 8-bit RGB PNGs**, SHA-256 `c4aebe5c29ff413caf4b6f8fcb62b2bcd594bed27d30b7dda45478e56fa10079`. `dist/gathering/12.jpg` is a **512×512 JPEG**, 60,300 bytes. Record `12.json` links the exact PNG hash. Pixel comparison and format results are in `gathering/checks/round-12/wall-review.json`.
 
-**The Carried Currents:** three ochre currents meet in a tied bundle that carries
-their evidence. The installed image tool generated the pigment motif. It was
-blended only into vacant upper-left rock `(160,150,260,105)`: **5,566 pixels**
-changed, **zero outside** that rectangle. The final whole wall is
-`artifacts/gathering/wall-v12.png`, identically copied to continuing `wall.png`:
-**1254×1254, 8-bit RGB PNG, 3,811,431 bytes**. The preview is
-`dist/gathering/11.jpg`: **512×512 baseline JPEG, 69,384 bytes**.
+I inspected the PNG. Inherited Pepe remains a broad-mouthed, heavy-lidded cave figure. Each existing hand has four fingers and one thumb, five digits; the new mark adds no hand or handprint. I found no letters, numbers, captions, signatures, logos, watermarks, artificial border, real people or prohibited symbols. **No known unmet visual requirement.** The inherited rock has a photographic-looking texture and the new mark is small at thumbnail scale; this is local visual review, not independent artistic certification.
 
-I inspected the PNG and decoded JPEG. The inherited Pepe remains the main
-figure, with a wide mouth and heavy-lidded eyes. Each inherited hand retains
-four fingers and an opposing thumb, five digits; no hands or stencils were
-added. No visible letters, numbers, captions, signatures, logos, watermarks,
-borders, frames, real people or political/hateful symbols were found. Ancestor
-marks, rock, cracks, colors, torchlight and framing remain. **No known unmet
-visual requirement.** Retained limitations: inherited rock has a photographic-looking
-texture, and the small charcoal trails are subdued at thumbnail scale. This is
-local visual review, not an independent artistic certification.
-
-Record **11** has the exact required traits and links the final PNG SHA-256
-`dc942e7df0f7ac9f81608e8d9a2adc1c2aa04f9c612fd0e00f9d24a9b065172b`.
-`dist/goals.json` copies the four unchanged goals. The self-contained gallery
-includes every numbered record by wall, newest paintings first. Existing
-unpainted placeholders remain; this is not the cave's first gathering.
+`dist/goals.json` copies all four unchanged GOAL.md lines. The self-contained `dist/index.html` contains all 149 records across five walls, newest painted records first; existing unpainted placeholders remain, with no JPEGs. This is not the cave's first gathering. No line folder was changed.

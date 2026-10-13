@@ -109,3 +109,11 @@ it standalone; retained real ZTO evidence demonstrates the complete path.
 ```sh
 python3 -B shared/flow-handoff/flow_handoff.py demo
 ```
+
+Gathering 12 refreshed its vendored Line 4 validator with the native exact
+event-type repair. A fresh real ZTO window and reproducible archive are now
+included. Verify the dated archive without network access:
+
+```sh
+python3 -B shared/flow-handoff/flow_handoff.py check shared/flow-handoff/examples/round-12-zto-flows.zip
+```

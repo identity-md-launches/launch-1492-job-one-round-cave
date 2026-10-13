@@ -1,0 +1,38 @@
+{
+  "record_number": 12,
+  "wall_dimensions": [
+    1254,
+    1254
+  ],
+  "wall_format": "8-bit RGB PNG",
+  "wall_bytes": 3823282,
+  "wall_sha256": "c4aebe5c29ff413caf4b6f8fcb62b2bcd594bed27d30b7dda45478e56fa10079",
+  "preview_dimensions": [
+    512,
+    512
+  ],
+  "preview_format": "JPEG",
+  "preview_bytes": 60300,
+  "edit_rectangle": [
+    75,
+    630,
+    230,
+    192
+  ],
+  "changed_pixels": 5103,
+  "changed_bounds": [
+    126,
+    641,
+    276,
+    785
+  ],
+  "changed_pixels_outside_rectangle": 0,
+  "pepe_hands": "inherited left and right hands each visually counted as four fingers and one thumb; no new hands",
+  "visual_review": "Warm rough rock, cracks, torchlight and framing retained. Four short flat pigment trails and dots added on vacant left rock. No visible writing, numbers, logos, borders, real people or prohibited symbols.",
+  "unmet_visual_requirements": [],
+  "limitations": [
+    "Inherited rock texture has a photographic appearance.",
+    "The new mark is small in the 512-pixel preview.",
+    "Visual review is local, not independent certification."
+  ]
+}

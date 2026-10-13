@@ -1,0 +1,14 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.008s\n\nOK\n",
+  "command": [
+    "python3",
+    "-B",
+    "line-3/tools/erc20-intent/test_intent.py"
+  ],
+  "kind": "suite",
+  "tests_run": 11,
+  "checked_at": "2026-10-13T02:33:46.362578+00:00",
+  "workspace": "test/scratch/round-12-mirror"
+}

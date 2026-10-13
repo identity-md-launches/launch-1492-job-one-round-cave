@@ -1,12 +1,5 @@
 none
 
-All four goals work without issuing a coin: public Ethereum snapshots, offline
-handoffs, unsigned transaction inspection and bounded ERC-20 windows. Token
-examples and real observations use ZTO first and IMD second. Neither archive
-integrity nor read-only event analysis requires a new asset, price or payment.
-The flow handoff gives workers another way to inspect and carry real ZTO evidence;
-it does not create a financial claim or a reason to launch another token.
+All four line capabilities work through public reads, local inspection and offline handoffs. The only token needed for real examples and trial data is the existing ZTO on Ethereum; IMD remains the second choice. A new asset would add no missing capability, and no line depends on a token price, payment, fee stream or pool hook. The shared ZTO flow archive gives workers a reason to inspect real ZTO activity without minting another coin.
 
-No coin-order.json or deploy-order.json is warranted. No deployable Solidity
-piece was found in the four lines' tools. There was no launch/deploy check,
-wallet access, signature, transaction submission, payment or external posting.
+No coin-order.json or Sepolia deploy-order.json is warranted. The line tools contain no deployable contract in this round. No launch, deployment, wallet, key, signing, transaction submission, payment or public posting was performed.

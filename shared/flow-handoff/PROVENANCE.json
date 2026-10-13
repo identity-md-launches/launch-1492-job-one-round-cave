@@ -15,7 +15,7 @@
     {
       "source": "line-4/tools/transfer-crosscheck/crosscheck.py",
       "copy": "shared/flow-handoff/vendor/transfer-crosscheck/crosscheck.py",
-      "sha256": "31cce1170a07e67da4bced654879153b53edeb9c268c374dbf79a8a95c07367e",
+      "sha256": "374724972a019d56fa46665dc2f1c9f0c8bcd19eb90fe160ab0341d0042ac221",
       "changed": false
     },
     {
@@ -56,5 +56,18 @@
     "path": "shared/flow-handoff/examples/tried-zto-flows.zip",
     "sha256": "f0ac49f6616425771bc9c9a3626598cf58a46482ed2c73e6b913d6552277f5d4",
     "bytes": 7231
+  },
+  "round_12_trial": {
+    "source": "gathering/checks/round-12/live-zto-window.json",
+    "copy": "shared/flow-handoff/examples/round-12-zto-window.json",
+    "sha256": "1723aa8f58d776cd151bd58d129a6c018e3dc727419e9b703427a03321661121",
+    "captured_at": "2026-10-13T02:34:14Z",
+    "source_provider": "https://eth.drpc.org",
+    "from_block": 26177298,
+    "to_block": 26177309,
+    "transfer_count": 3,
+    "archive": "shared/flow-handoff/examples/round-12-zto-flows.zip",
+    "archive_sha256": "a45127d93c4536b00edbf02b79ed0ddf8ff9b2b5c7c6cc57209828ba89a7a6d9",
+    "archive_bytes": 7231
   }
 }

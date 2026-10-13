@@ -146,9 +146,10 @@ class Tests(unittest.TestCase):
         raw = rebuild(capture)
         capture = kit.parse(raw)
         capture['transfers'][0]['transaction_index'] = True
-        # Native dict equality accepts this substitution; the wrapper does not.
-        kit.flows.activity.crosscheck.checked(capture)
-        with self.assertRaisesRegex(ValueError, 'JSON types'):
+        # The current native validator and the portable wrapper both reject it.
+        with self.assertRaises(kit.window.RpcError):
+            kit.flows.activity.crosscheck.checked(capture)
+        with self.assertRaises(kit.window.RpcError):
             kit.build(kit.canonical(capture))
 
     def test_trusted_digest_and_crc_failure(self):
