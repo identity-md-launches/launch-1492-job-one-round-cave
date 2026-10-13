@@ -1,0 +1,55 @@
+{
+  "wall": {
+    "paths": [
+      "artifacts/line-3/wall-v13.png",
+      "artifacts/line-3/wall.png"
+    ],
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGB",
+    "bytes": 3971758,
+    "sha256": "482ab32c7c964306fd23f19a36ad7d5bdb3965b313f891e65c08b38a2e8f84dc"
+  },
+  "thumbnail": {
+    "path": "dist/line-3/32.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "JPEG",
+    "bytes": 74827
+  },
+  "preservation": {
+    "inheritedSha256": "0211f8ab50c13ba82a2411584b06de15b6738c577c22b15dae8c6870be170790",
+    "editRectangleXYXY": [
+      1025,
+      355,
+      1205,
+      535
+    ],
+    "changedPixels": 5922,
+    "changedPixelsOutsideRectangle": 0
+  },
+  "cutout": {
+    "width": 1312,
+    "height": 1199,
+    "format": "PNG",
+    "mode": "RGBA"
+  },
+  "checks": {
+    "newBehavioralTestsPassed": 5,
+    "demoExitCode": 0,
+    "canonicalDemoBytes": 46,
+    "roundTripMatchedInheritedInspection": true
+  },
+  "visualReview": {
+    "reviewed": true,
+    "method": "Manual inspection of full PNG and decoded 512-pixel JPEG",
+    "mark": "Small tied ochre pouch with charcoal cord and pale pebbles on right-side stone",
+    "hands": "Both inherited Pepe hands show four fingers and an opposing thumb; no hands or stencils added",
+    "ancestors": "Pepe, earlier motifs, cracks, rock, torchlight and framing remain; zero changed pixels outside the vacant placement rectangle",
+    "palette": "Red and yellow ochre, charcoal and chalk white over the inherited warm stone",
+    "prohibitedContent": "No letters, numbers, captions, signatures, logos, watermarks, new borders or frames, real people or prohibited symbols observed",
+    "limits": "The pouch is intentionally small in the 512-pixel thumbnail; inherited rock has a photographic-looking texture that the brief required preserving; local visual review is not independent artistic certification"
+  },
+  "unmetVisualRequirements": []
+}

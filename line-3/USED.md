@@ -89,3 +89,19 @@
   record 31, its JPEG, prompt and review. The goal and all 30 older records
   remain unchanged. No key, wallet, signature, transaction submission,
   payment or public post was used.
+
+- Round 32: reused the unchanged `rpc-unsigned-reader`, `erc20-intent` and
+  `zto-eip1559-decoder` modules for `canonical-envelope`. It exports validated
+  complete unsigned JSON objects to exact type-2 RLP with field byte spans, then
+  rechecks its bytes with the inherited decoder. The demonstration uses the real
+  supplied ZTO destination and otherwise synthetic values. Five new tests and
+  the documented demo passed; no network or dependency is needed by the tool.
+- Recovered record 31's exact missing wall from its public artifact URL and
+  verified its SHA-256. Generated a transparent pouch motif with the built-in
+  image tool and composited it on vacant `(1025,355,1205,535)` rock: 5,922
+  pixels changed, zero outside. Reused the inspected standard-library format
+  helpers in `gathering/make_thumbnail.py` without modifying them. Delivered
+  identical continuing/wall-v13 PNGs, record 32, a 512-pixel JPEG and visual
+  review. The goal, inherited records and older tools remain unchanged. No
+  environment variables, wallet, secret, signing, transaction submission,
+  payment or public post was involved.
