@@ -105,3 +105,53 @@ summaries. Mocked transport tests are explicitly offline simulations. The older
 historical live range returned HTTP 403; this failure was not treated as empty
 evidence. Public-provider agreement and receipts remain observations, not
 proofs of completeness, honesty, finality, or balances.
+
+## Exact transfer event types (2026-10-13)
+
+Saved transfer summaries now require the same JSON types as the events rebuilt
+from raw logs. Previously Python equality could accept a boolean or float in an
+integer field: for example, `true` in place of `1`, or `238.0` in place of `238`.
+The validator now checks the list, each event object, its exact keys, and each
+scalar's type and value. The fixed event shape needs no recursive traversal of
+untrusted payloads. Receipt and other companions importing `checked()` inherit
+the stricter check. Correct schema 2 and schema 3 captures remain compatible.
+
+Tried offline on 2026-10-13:
+
+```sh
+python3 -B line-4/tools/transfer-crosscheck/test_crosscheck.py
+```
+
+All **21 tests passed**. Before the repair, the added regressions reproduced
+nine accepted malformed summaries: equal floats for all three integer event
+fields (`block`, `log_index`, `transaction_index`) and booleans replacing both
+zero and one in each field. The suite also rejects altered strings, nested
+containers, missing or extra event fields, invalid collection shapes, and
+changed event counts or order. It accepts reordered object keys, the retained
+real schema 2/3 captures, and captures emitted by the current producer with
+retained real RPC replies. The low-block/index cases are deliberately mutated
+test data, not claims about chain activity.
+
+The offline `--demo` command above still returned **agreement** for the three
+retained real ZTO transfers in blocks **26177298–26177309**, with exit code 0.
+These checks do not establish provider completeness, independence, finality,
+or any account balance.
+
+A fresh dRPC observation at **2026-10-13T02:25:55Z** also returned those three
+historical ZTO transfers and passed the repaired validator. Its schema 3 events,
+boundary anchors and semantic receipt agree with the retained schema 2
+PublicNode observation from 2026-10-12. This is one fresh read compared with
+dated evidence, not two fresh concurrent observations. The original capture
+is retained in `round-32-live-drpc.json`; replay it offline with:
+
+```sh
+python3 -B line-4/tools/transfer-window-receipt/receipt.py --capture line-4/tools/transfer-crosscheck/round-32-live-drpc.json
+```
+
+All six native Line 4 suites passed **65 tests** after the repair. A separate
+scratch integration matrix rejected 395 malformed-event cases across the
+validator and its four report consumers. Check summaries are in
+`line-4/round-32-tests.json`, `line-4/round-32-integration-check.json` and
+`line-4/round-32-live-check.json`. The companion mark **The Fitted Stones** shows
+two notched ochre stones comparing their shapes beside Pepe; image dimensions,
+format and visual limitations are recorded in `line-4/ROUND-32.md`.

@@ -1,0 +1,49 @@
+{
+  "wall": {
+    "path": "artifacts/line-4/wall-v13.png",
+    "format": "PNG",
+    "mode": "RGB",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 2845089,
+    "sha256": "c07d773a512aaf626d16b47a895cd02f2e95834d68a36410f9b55ba107669fb2"
+  },
+  "thumbnail": {
+    "path": "dist/line-4/32.jpg",
+    "format": "JPEG",
+    "width": 512,
+    "height": 512,
+    "bytes": 50293
+  },
+  "preservation": {
+    "ancestor_sha256": "fa1d83c9ab13a8cad651263d3231d700becb2c3fa9ebe34f59af2e6b63f6b1f3",
+    "patches": [
+      [
+        244,
+        365,
+        206,
+        123
+      ],
+      [
+        244,
+        488,
+        100,
+        17
+      ]
+    ],
+    "changed_pixels": 27035,
+    "outside_patches_changed_pixels": 0,
+    "ancestor_hand_protection": "The lower-right part of the original rectangular selection is excluded to preserve the top of the inherited raised hand/stone."
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "technique": "AI-generated mark; ffmpeg retained only two adjoining vacant-rock patches and converted the preview to JPEG"
+  },
+  "unmet_visual_requirements": [],
+  "visual_review": "The notched red/yellow ochre stones and charcoal trail occupy vacant rock left of Pepe. Pepe retains his wide mouth and heavy-lidded eyes. Both inherited hands retain four fingers and a thumb; the inherited stencil also has five digits. No new hand was added. No letters, numbers, captions, signatures, logos, watermarks, borders, frames, real people or prohibited symbols were seen. Ancestor paintings and all pixels outside the two patches are unchanged.",
+  "limitations": [
+    "The inherited rock has a photographic-looking texture; it was not restyled.",
+    "Local bare-rock texture differs inside the two vacant-rock patches.",
+    "The chalk requested in the generation prompt rendered as a short charcoal trace; this is permitted earth pigment."
+  ]
+}

@@ -66,6 +66,97 @@ class CrosscheckTests(unittest.TestCase):
                 with self.assertRaises(c.window.RpcError):
                     c.compare(self.left, bad)
 
+    def test_transfer_integer_fields_reject_equal_floats(self):
+        # Each replacement compares equal in Python but changes the JSON type.
+        for field in ("block", "log_index", "transaction_index"):
+            with self.subTest(field=field):
+                bad = copy.deepcopy(self.left)
+                integer = bad["transfers"][0][field]
+                bad["transfers"][0][field] = float(integer)
+                self.assertEqual(bad["transfers"], self.left["transfers"])
+                with self.assertRaises(c.window.RpcError):
+                    c.checked(bad)
+
+    def test_transfer_integer_fields_reject_equal_booleans(self):
+        raw_fields = {"block": "blockNumber", "log_index": "logIndex",
+                      "transaction_index": "transactionIndex"}
+        for field, raw_field in raw_fields.items():
+            for integer in (0, 1):
+                with self.subTest(field=field, integer=integer):
+                    # Explicit adversarial evidence derived from one real log.
+                    # Low integers exercise both False == 0 and True == 1.
+                    evidence = copy.deepcopy(self.left)
+                    evidence["raw_logs"] = evidence["raw_logs"][:1]
+                    evidence["raw_logs"][0][raw_field] = hex(integer)
+                    if field == "block":
+                        for key in ("from_block", "to_block", "head_at_capture", "decimals_block"):
+                            evidence[key] = integer
+                        for key in ("from_block_anchor", "to_block_anchor"):
+                            evidence[key] = {
+                                "number": integer,
+                                "hash": evidence["raw_logs"][0]["blockHash"],
+                            }
+                    self.refresh(evidence)
+                    c.checked(evidence)
+                    bad = copy.deepcopy(evidence)
+                    bad["transfers"][0][field] = bool(integer)
+                    self.assertEqual(bad["transfers"], evidence["transfers"])
+                    with self.assertRaises(c.window.RpcError):
+                        c.checked(bad)
+
+    def test_transfer_event_schema_and_string_types_are_strict(self):
+        event = self.left["transfers"][0]
+        for field, value in event.items():
+            replacements = [None, [], {}, [value], {"value": value}]
+            if type(value) is int:
+                replacements += [str(value), value + 1]
+            else:
+                replacements += [False, 0, value + " "]
+                if field == "raw_value":
+                    replacements.append(int(value))
+            for replacement in replacements:
+                with self.subTest(field=field, replacement=replacement):
+                    bad = copy.deepcopy(self.left)
+                    bad["transfers"][0][field] = replacement
+                    with self.assertRaises(c.window.RpcError):
+                        c.checked(bad)
+            with self.subTest(missing=field):
+                bad = copy.deepcopy(self.left)
+                del bad["transfers"][0][field]
+                with self.assertRaises(c.window.RpcError):
+                    c.checked(bad)
+        for replacement in (None, False, [], list(event), {**event, "extra": "unchecked"}):
+            with self.subTest(event=replacement):
+                bad = copy.deepcopy(self.left)
+                bad["transfers"][0] = replacement
+                with self.assertRaises(c.window.RpcError):
+                    c.checked(bad)
+
+    def test_transfer_collection_structure_is_strict(self):
+        events = self.left["transfers"]
+        variants = [None, False, {}, events[0], tuple(events),
+                    events[:-1], events + [events[-1]], list(reversed(events))]
+        for replacement in variants:
+            with self.subTest(replacement=replacement):
+                bad = copy.deepcopy(self.left)
+                bad["transfers"] = replacement
+                with self.assertRaises(c.window.RpcError):
+                    c.checked(bad)
+
+    def test_object_key_order_does_not_change_valid_transfers(self):
+        reordered = copy.deepcopy(self.left)
+        reordered["transfers"] = [dict(reversed(list(event.items())))
+                                  for event in reordered["transfers"]]
+        self.assertEqual(c.compare(reordered, self.right)["status"], "agreement")
+
+    def test_retained_captures_remain_valid(self):
+        for name in ("publicnode.json", "drpc.json", "round-27-live-zto.json",
+                     "round-27-live-drpc.json"):
+            with self.subTest(name=name):
+                capture = json.loads((Path(__file__).parent / name).read_text())
+                result = c.checked(capture)
+                self.assertEqual(result["transfers"], capture["transfers"])
+
     def test_raw_evidence_is_revalidated(self):
         self.right["raw_logs"][0]["removed"] = True
         with self.assertRaises(c.window.RpcError):

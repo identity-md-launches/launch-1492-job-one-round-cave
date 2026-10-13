@@ -1,0 +1,55 @@
+{
+  "status": "pass",
+  "total_test_count": 65,
+  "suites": [
+    {
+      "command": "python3 -B line-4/tools/erc20-transfer-window/test_transfer_window.py",
+      "test_count": 21,
+      "reported_seconds": 0.707,
+      "exit_code": 0,
+      "result": "OK"
+    },
+    {
+      "command": "python3 -B line-4/tools/transfer-crosscheck/test_crosscheck.py",
+      "test_count": 21,
+      "reported_seconds": 0.059,
+      "exit_code": 0,
+      "result": "OK"
+    },
+    {
+      "command": "python3 -B line-4/tools/transfer-window-receipt/test_receipt.py",
+      "test_count": 5,
+      "reported_seconds": 0.015,
+      "exit_code": 0,
+      "result": "OK"
+    },
+    {
+      "command": "python3 -B line-4/tools/transfer-window-coverage/test_coverage.py",
+      "test_count": 6,
+      "reported_seconds": 0.003,
+      "exit_code": 0,
+      "result": "OK"
+    },
+    {
+      "command": "python3 -B line-4/tools/transfer-window-activity/test_activity.py",
+      "test_count": 3,
+      "reported_seconds": 0.001,
+      "exit_code": 0,
+      "result": "OK"
+    },
+    {
+      "command": "python3 -B line-4/tools/transfer-counterparties/test_counterparties.py",
+      "test_count": 9,
+      "reported_seconds": 0.005,
+      "exit_code": 0,
+      "result": "OK"
+    }
+  ],
+  "execution_notes": [
+    "All six test sources and their implementation modules were read before execution.",
+    "Python -B prevented creation of bytecode files.",
+    "Tests use retained real ZTO captures and mocked RPC responses; the transport suite also exercises a temporary loopback HTTP server.",
+    "Receipt and coverage duplicate-key tests create and remove duplicate.json inside their allowed line-4 tool directories.",
+    "No external network requests, keys, secrets, environment-variable reads, transaction signing or transaction submission were used."
+  ]
+}

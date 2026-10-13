@@ -1,0 +1,19 @@
+{
+  "accepted_adversarial_consumer_checks": [],
+  "adversarial_consumer_checks": 395,
+  "adversarial_fixture_count": 79,
+  "consumers": [
+    "checked",
+    "receipt",
+    "coverage",
+    "activity",
+    "counterparties"
+  ],
+  "key_order_independence_checks_passed": 50,
+  "network_used": false,
+  "rejected_adversarial_consumer_checks": 395,
+  "schema3_real_producer_replay_compatibility": true,
+  "status": "pass",
+  "valid_consumer_checks_passed": 50,
+  "valid_fixture_count": 10
+}

@@ -1,0 +1,35 @@
+{
+  "status": "pass",
+  "goal_unchanged_bytes": true,
+  "older_records_unchanged": 31,
+  "new_record": "dist/line-4/32.json",
+  "record_shape_and_image_hash_valid": true,
+  "continuing_wall_matches_named_output": true,
+  "named_output_untracked": true,
+  "changed_paths_within_scope": true,
+  "files_outside_artifacts_below_100000_bytes": true,
+  "image_decode_checks": [
+    {
+      "path": "artifacts/line-4/wall-v13.png",
+      "codec_name": "png",
+      "width": 1254,
+      "height": 1254,
+      "pix_fmt": "rgb24",
+      "bytes": 2845089
+    },
+    {
+      "path": "dist/line-4/32.jpg",
+      "codec_name": "mjpeg",
+      "width": 512,
+      "height": 512,
+      "pix_fmt": "yuvj420p",
+      "bytes": 50293
+    }
+  ],
+  "unmet_visual_requirements": [],
+  "tests": {
+    "suites": 6,
+    "passed": 65
+  },
+  "limitations": "Local checks verify recorded bytes and behavior exercised here; they are not independent certification."
+}

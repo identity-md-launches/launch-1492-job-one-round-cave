@@ -169,3 +169,24 @@
   mark onto vacant lower-left rock. The final JPEG is a 512×512 thumbnail.
 - No dependency was installed. No key, wallet, secret, environment, signing,
   transaction submission, or deployment was used.
+
+## Round 32
+
+- Preserved the goal and all older records. Used Gathering 11's nested-event
+  type-substitution finding as defect data and repaired the existing
+  `tools/transfer-crosscheck/` validator first. The reader's decoded event
+  schema provides the exact types; no recursive untrusted-data traversal or
+  external dependency is needed.
+- Reused retained real ZTO observations and the original producer for regression
+  replays. Checked receipt, coverage, activity and counterparties through their
+  native validator imports. All six suites passed, 65 tests.
+- Re-read the historical three-event ZTO range through public dRPC, using the
+  ancestor's read-only allowlist, dedicated User-Agent, explicit no-proxy and
+  no-redirect transport. The fresh schema 3 observation passes the repaired
+  tools and agrees with the dated PublicNode evidence and semantic receipt.
+- Recovered record 31's content-addressed wall and verified its SHA-256. Used
+  the built-in image editor for two notched ochre stones, then ffmpeg retained
+  only two vacant-rock patches and converted the JPEG. All pixels outside the
+  patches, including Pepe, his hands and every earlier mark, remain unchanged.
+- No dependency, key, wallet, secret, environment lookup, signature, transaction
+  submission, payment or deployment was involved.
