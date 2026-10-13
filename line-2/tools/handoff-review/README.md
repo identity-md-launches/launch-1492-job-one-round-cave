@@ -2,85 +2,98 @@
 
 Review a worker's offline HANDOFF v1 ZIP with one command: payload integrity,
 byte reproduction under the original writer, conservative filename portability,
-and optional equality with its current public source directory. All checks use
-one bounded, immutable archive snapshot, so replacing the ZIP during the review
-cannot mix receipts from different archive versions. Python 3.8+ and only its
-standard library are needed. From the workspace root:
+optional equality with its current public source directory, and optional
+separately retained expected file sizes and SHA-256 digests. Every archive check
+uses one bounded, immutable snapshot. Python 3.8+ and only the standard library
+are needed. Run from the workspace root:
 
 ```sh
 python3 -B line-2/tools/handoff-review/review.py demo
 ```
 
-When tried, the actual inherited `line-2/handoff.zip` passed all four checks
-against `line-2/tools/handoff`: two files, 12,603 payload bytes, 13,181 ZIP bytes,
-SHA-256 `aaa03a258268263186f610e17ad8ede6851c8597b70a7ec29ae6b283f72f60bb`.
+When tried in step 32, the actual inherited `line-2/handoff.zip` passed all five
+checks against its source and retained content expectations: two files, 12,603
+payload bytes, 13,181 ZIP bytes, SHA-256
+`aaa03a258268263186f610e17ad8ede6851c8597b70a7ec29ae6b283f72f60bb`.
 The demo writes nothing and never extracts or executes packaged code.
 
-To review an existing public deliverable:
+Review an existing public deliverable:
 
 ```sh
-python3 -B line-2/tools/handoff-review/review.py check line-2/handoff.zip --source line-2/tools/handoff
+python3 -B line-2/tools/handoff-review/review.py check line-2/handoff.zip --source line-2/tools/handoff --expectation line-2/tools/handoff-content/inherited-content.json
 ```
 
-`--sha256 HASH` additionally checks an independently obtained archive digest.
-Without it, `trusted_digest_matched` is false: a self-computed digest identifies
-bytes but cannot authenticate their sender. Without `--source`, the source
-check explicitly reports `not-requested`; `selected_checks_passed` covers only
-the selected checks. Choose public source files intentionally: this tool hashes
-every regular file in the selected directory and is not a secret scanner.
+`--sha256 HASH` checks an independently obtained archive digest. Without it,
+`trusted_digest_matched` is false: a self-computed digest cannot authenticate a
+sender. Without `--source` or `--expectation`, that check explicitly reports
+`not-requested`. `selected_checks_passed` covers only selected checks. Choose
+public source files intentionally: the tool hashes every regular file in the
+selected directory and is not a secret scanner.
+
+Expectations use the existing [content-expectation format](../handoff-content/README.md).
+Retain them separately from a candidate archive and obtain them through a
+trusted channel. Generating expectations from the archive under review and
+immediately checking them only confirms self-consistency. `exact: true` rejects
+extra files; `exact: false` permits extras but requires every expected file's
+exact size and digest. A valid, reproducible wrong revision can pass integrity
+and reproduction but fail this content check.
 
 Exit **0** means every selected check passed. Exit **2** means valid archive
-integrity with one or more reproduction, portability or source differences.
-The JSON keeps *all* differences together, including the first reproduction
-byte offset, filename hazards, and changed/missing/omitted source files. A
-noncanonical ZIP timestamp or comment can yield a reproduction difference
-even when all payloads are intact. Exit **1** refuses invalid inputs or an
-unstable source tree, prints a diagnostic to stderr, and prints no partial JSON.
-Argument syntax errors use argparse's standard exit 2 and have no JSON output.
-The `handoff-review-v1` report is deterministic for unchanged inputs, has one
-top-level archive digest, explicit statuses, and the inherited profiles/receipts.
+integrity with reproduction, portability, source or content differences. JSON
+retains all differences together: first reproduction byte offset, filename
+hazards, changed/missing/omitted source files, and changed/missing/unexpected
+expected files. Exit **1** refuses invalid inputs or an unstable source tree,
+prints a diagnostic to stderr, and emits no partial JSON. Argument syntax
+errors use argparse's exit 2 with no JSON output.
 
-Archive inputs and source directories must be relative workspace paths without
-`..` or symlinks. Default limits are 66 MiB archive, 64 MiB payload, 1,000 files,
-and 512 KiB each of manifest and central metadata. Source directory counts and
-encoded path metadata are bounded by the inherited scanner. Optional positive
-`--max-archive-bytes`, `--max-payload-bytes`, and `--max-files` set review budgets;
-the original deterministic writer retains its own 64 MiB / 1,000-file cap.
-The archive is read once into memory and independently inspected twice, then
-rebuilt in memory; peak memory can be several times the archive size. The report
-describes the captured bytes, not whatever bytes are at the path afterward.
-Use a stable source workspace; source mutation checks do not form an atomic
-snapshot or protect against hostile ancestor-directory swaps.
+The deterministic `handoff-review-v1` report retains the existing fields and
+adds `checks.content`, with explicit status and its receipt. The receipt's
+`expectation_sha256` identifies the raw expectation bytes; its archive digest
+matches the top-level digest and every other archive receipt.
 
-Keep these unchanged runtime dependencies at their paths under the recipient's
-workspace, along with `review.py`:
+Archive inputs, expectations and source directories must be relative workspace
+paths without `..` or symlinks. Expectations are read once, capped at 512 KiB,
+and validated before archive reads or source scans. Default limits are 66 MiB
+archive, 64 MiB payload, 1,000 files, and 512 KiB each of manifest and central
+metadata. Optional positive `--max-archive-bytes`, `--max-payload-bytes`, and
+`--max-files` set review budgets; the writer retains its own 64 MiB/1,000-file
+cap. Source entry counts and path metadata are also bounded.
+
+The archive is read once into memory, independently inspected twice, and
+rebuilt in memory; peak memory can be several times its size. Content checks
+reuse the verified receipt and do not reopen the ZIP. Reports describe captured
+bytes, not later path contents. Caller-owned bytearrays are frozen before the
+checks. Use a stable workspace: source scans are not atomic, and path checks do
+not protect against hostile ancestor-directory swaps.
+
+Keep these runtime dependencies at their paths under the recipient workspace:
 
 - `line-2/tools/handoff/handoff.py`
 - `line-2/tools/handoff-inspect/inspect_handoff.py`
 - `line-2/tools/handoff-reproduce/reproduce.py`
 - `line-2/tools/handoff-portability/portability.py`
 - `line-2/tools/handoff-source/source_check.py`
+- `line-2/tools/handoff-content/content.py`
 
-The demo additionally needs the inherited ZIP and its source directory. All
-dependencies are ordinary repository files. The tool loads only these trusted
-local modules; it never imports ZIP payloads. There is no network, installation,
-environment discovery, wallet, signing, payment, transaction or upload operation.
-Passing checks does not establish authorship, payload safety, software behavior,
-build reproducibility, or successful extraction on every operating system.
+The demo additionally needs the inherited ZIP, its original source directory,
+and `line-2/tools/handoff-content/inherited-content.json`. All dependencies are
+ordinary repository files. The tool imports trusted local modules, never ZIP
+payloads. It has no network, environment discovery, wallet, signing, payment,
+transaction or upload operation. Passing checks does not establish authorship,
+payload safety, software behavior, build reproducibility, or successful
+extraction on every operating system.
 
 ```sh
 python3 -B line-2/tools/handoff-review/test_review.py
 ```
 
-All 15 behavioral tests passed: real archive/source, explicit source omission,
-determinism and trusted hashes, noncanonical valid ZIPs, filename hazards,
-source differences, combined diagnostics, corruption before source reads,
-budgets, malformed ZIPs, one archive read, replacement after capture,
-workspace/symlink refusals, nonregular source entries and CLI statuses. Test
-fixtures are public and disposable under `test/scratch`. The first invocation
-caught a missing bracket in the test file; it was repaired before this result.
+All 24 behavioral checks passed, including nine new checks for expected content,
+valid wrong revisions, subset/extra/missing files, combined differences,
+malformed expectations before archive reads, one read of each input, replacement
+of both paths after capture, expectation path confinement, CLI exit codes and
+caller-buffer mutation. The 10 inherited content checks and 19 inspector checks
+also passed (53 total). Public test fixtures stay under `test/scratch`.
 
-This piece advances reproducible offline handoffs and needs no coin, balance,
-price or payment. The step's new painting represents several checks surrounding
-one tied bundle; image output and visual limitations are recorded separately in
-`line-2/WALL-29.md` and `line-2/wall-review-29.json`.
+This improves reproducible offline handoffs and needs no coin or payment.
+Step 32's painting places an expected stone beside a stone in a woven sling;
+image dimensions, formats and visual limitations are in `line-2/WALL-32.md`.

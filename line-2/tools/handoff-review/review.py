@@ -26,18 +26,32 @@ def load(name, relative):
 REPRODUCE = load("handoff_review_reproduce", "line-2/tools/handoff-reproduce/reproduce.py")
 PORTABILITY = load("handoff_review_portability", "line-2/tools/handoff-portability/portability.py")
 SOURCE = load("handoff_review_source", "line-2/tools/handoff-source/source_check.py")
+CONTENT = load("handoff_review_content", "line-2/tools/handoff-content/content.py")
 INSPECT = REPRODUCE.INSPECT
 WRITER = REPRODUCE.WRITER
 
 
-def review_bytes(data, source=None, expected=None, limits=None):
+def review_bytes(data, source=None, expected=None, limits=None, expectation_data=None):
     """Refuse invalid bytes; retain every diagnostic for valid differing archives.
 
     Source scans compare against this same snapshot's receipt. No archive path
     is reopened by a companion and no packaged code is imported or executed.
     """
     limits = limits or INSPECT.Limits()
+    limits.validate()
+    if not isinstance(data, (bytes, bytearray)):
+        raise ValueError("archive snapshot must be bytes")
+    if len(data) > limits.archive_bytes:
+        raise ValueError("archive exceeds size limit")
+    # Reject malformed expectations before archive inspection or source scans.
+    # Freeze caller-owned buffers so all checks describe the same captured bytes.
+    if expectation_data is not None:
+        CONTENT.parse_expectation(expectation_data)
+        expectation_data = bytes(expectation_data)
+    data = bytes(data)
     receipt = INSPECT.inspect_stream(io.BytesIO(data), limits, expected)
+    content_result = (None if expectation_data is None else
+                      CONTENT.compare(receipt, expectation_data))
     reproduction = REPRODUCE.check_bytes(data, expected, limits)
     issues = PORTABILITY.analyze([item["path"] for item in receipt["files"]])
     source_result = None
@@ -51,6 +65,8 @@ def review_bytes(data, source=None, expected=None, limits=None):
         failed.append("portability")
     if source_result is not None and not source_result["matches_source"]:
         failed.append("source")
+    if content_result is not None and not content_result["content_passed"]:
+        failed.append("content")
     return {
         "format": "handoff-review-v1",
         "selected_checks_passed": not failed,
@@ -70,23 +86,32 @@ def review_bytes(data, source=None, expected=None, limits=None):
             "source": {"status": "not-requested" if source_result is None else
                        ("pass" if source_result["matches_source"] else "difference"),
                        "directory": source, "receipt": source_result},
+            "content": {"status": "not-requested" if content_result is None else
+                        ("pass" if content_result["content_passed"] else "difference"),
+                        "receipt": content_result},
         },
         "note": "Selected format checks only: no sender authentication, payload safety "
                 "assessment, build reproduction or extraction test. Source scans require "
-                "a stable workspace and are not atomic snapshots.",
+                "a stable workspace and are not atomic snapshots. Content expectations "
+                "must be independently trusted to identify the intended revision.",
     }
 
 
-def review_path(archive, source=None, expected=None, limits=None):
+def review_path(archive, source=None, expected=None, limits=None, expectation=None):
     limits = limits or INSPECT.Limits()
     limits.validate()
+    expectation_data = None
+    if expectation is not None:
+        expectation_data = CONTENT.read_expectation(expectation)
+        CONTENT.parse_expectation(expectation_data)
     # Read once, with a hard budget and no intentional symlink following.
     data = WRITER.regular_bytes(WRITER.workspace_path(archive), limits.archive_bytes)
-    return review_bytes(data, source, expected, limits)
+    return review_bytes(data, source, expected, limits, expectation_data)
 
 
 def demo():
-    result = review_path("line-2/handoff.zip", "line-2/tools/handoff")
+    result = review_path("line-2/handoff.zip", "line-2/tools/handoff",
+                        expectation="line-2/tools/handoff-content/inherited-content.json")
     if not result["selected_checks_passed"]:
         raise ValueError("the inherited handoff failed its selected checks")
     result["demo"] = "actual inherited archive and source; no files written"
@@ -100,6 +125,7 @@ def main(argv=None):
     check = commands.add_parser("check")
     check.add_argument("archive", help="relative workspace HANDOFF v1 ZIP")
     check.add_argument("--source", help="optional relative workspace source directory")
+    check.add_argument("--expectation", help="separately retained content-expectation JSON")
     check.add_argument("--sha256", help="independently obtained archive SHA-256")
     check.add_argument("--max-archive-bytes", type=INSPECT.positive, default=INSPECT.Limits.archive_bytes)
     check.add_argument("--max-payload-bytes", type=INSPECT.positive, default=INSPECT.Limits.payload_bytes)
@@ -111,7 +137,7 @@ def main(argv=None):
         else:
             limits = INSPECT.Limits(archive_bytes=args.max_archive_bytes,
                                     payload_bytes=args.max_payload_bytes, files=args.max_files)
-            result = review_path(args.archive, args.source, args.sha256, limits)
+            result = review_path(args.archive, args.source, args.sha256, limits, args.expectation)
         print(json.dumps(result, sort_keys=True, indent=2, ensure_ascii=True))
         return 0 if result["selected_checks_passed"] else 2
     except (OSError, ValueError, TypeError, UnicodeError, RecursionError,

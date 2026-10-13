@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "older_records_unchanged": 31,
+  "goal_unchanged": true,
+  "new_number": 32,
+  "changed_paths": [
+    "line-2/USED.md",
+    "line-2/tools/handoff-review/README.md",
+    "line-2/tools/handoff-review/review.py",
+    "line-2/tools/handoff-review/test_review.py"
+  ],
+  "untracked_paths": [
+    "dist/line-2/32.jpg",
+    "dist/line-2/32.json",
+    "line-2/WALL-32.md",
+    "line-2/checks-32.json",
+    "line-2/wall-review-32.json"
+  ],
+  "named_output": "artifacts/line-2/wall-v13.png",
+  "wall_dimensions": [
+    1254,
+    1254
+  ],
+  "thumbnail_dimensions": [
+    512,
+    512
+  ],
+  "record_hash_matches": true,
+  "outside_artifacts_new_files_below_100KB": true,
+  "test_count": 53,
+  "visual_requirements_unmet": []
+}

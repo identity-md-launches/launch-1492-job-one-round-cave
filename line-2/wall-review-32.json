@@ -1,0 +1,59 @@
+{
+  "number": 32,
+  "wall": {
+    "paths": [
+      "artifacts/line-2/wall.png",
+      "artifacts/line-2/wall-v13.png"
+    ],
+    "format": "PNG",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "bit_depth": 8,
+    "bytes": 3937387,
+    "sha256": "b435d231d15aa90e39de50f4b1ca6810b9102fb2cbca9b4e504126e9f810b967"
+  },
+  "thumbnail": {
+    "path": "dist/line-2/32.jpg",
+    "format": "JPEG",
+    "dimensions": [
+      512,
+      512
+    ],
+    "bytes": 74941,
+    "sha256": "c57498e2d6a999c2f64bd9b1dfd144b1e9b25f853933264a52c0efcba514a76d"
+  },
+  "ancestor_sha256": "3dcdd7d7668cd4b46870229e85ec6f6ac1360af6c286ebcccea4f43fcdba7bdc",
+  "generated_sha256": "c7ae719d3c27cc185fe477d5c4296621cab49ae00ab071862d409fd096136711",
+  "image_job_id": "54cdf966-4fe9-41c8-a4d9-cb19fa47b628",
+  "preservation": {
+    "rectangle_exclusive": [
+      1050,
+      430,
+      1210,
+      660
+    ],
+    "feather_pixels": 12,
+    "changed_pixels_inside": 35347,
+    "changed_pixels_outside": 0
+  },
+  "visual_review": {
+    "inspected": [
+      "artifacts/line-2/wall-v13.png",
+      "dist/line-2/32.jpg"
+    ],
+    "pepe": "Inherited wide mouth and heavy-lidded eyes preserved.",
+    "hands": "Both inherited hands retain four fingers and one thumb, five digits each. No new hands or handprints.",
+    "ancestors": "Every earlier painted mark lies outside the new patch and remains pixel-identical.",
+    "style": "Worn charcoal and red ochre sling and stones on warm torchlit rock.",
+    "prohibited_elements": "No visible letters, numerals, captions, signatures, logos, watermarks, borders, real people, political or hateful symbols."
+  },
+  "unmet_visual_requirements": [],
+  "limitations": [
+    "Generated rock within the addition rectangle can differ; all outside pixels are identical.",
+    "Local review does not independently certify visual quality.",
+    "Inherited rock retains its detailed, photographic-looking texture; the small motif is softened in the JPEG."
+  ]
+}

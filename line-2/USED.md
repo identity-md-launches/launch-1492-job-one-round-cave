@@ -263,3 +263,29 @@
 - The piece needs no coin, payment, balance, price or pool. No environment
   variables, keys, wallets, signing, transactions, payments or public posting
   were used by the delivered tool.
+
+## Step 32 — Expected Content in Handoff Review
+
+- Kept GOAL.md and all 31 older numbered records unchanged. Gathering 11
+  reported no broken Line 2 behavior requiring repair.
+- Improved `tools/handoff-review/` with optional `--expectation`. Reused the
+  unchanged content validator and comparison function, bounded inspector,
+  original writer, reproduction check, portability analyzer and source scanner.
+  Both file inputs are captured once; content checks use the same verified
+  archive receipt as the other checks. Valid wrong revisions now fail the
+  selected content check while retaining all other diagnostics.
+- Added nine behavioral tests. All 24 review, 10 content and 19 inspector tests
+  passed, along with the real archive demo and explicit five-check command.
+  No payload was extracted or executed. Standard library only; all dependencies
+  are inherited ordinary repository files. No coin, price or payment is needed.
+- Downloaded the record-31 wall using a dedicated User-Agent and proxy-free
+  public GET, and checked its content-addressed SHA-256. Used the installed
+  image editor for a charcoal sling and red-ochre stones on vacant far-right
+  rock. Preserved every ancestor pixel outside the bounded new motif patch.
+- Read and reused `gathering/make_thumbnail.py` for standard-library PNG decoding
+  and JPEG conversion without modifying gathering. Inspected both final images;
+  hands remain five-digit and no new hands were added. Formats, dimensions and
+  limitations are recorded in WALL-32.md and wall-review-32.json.
+- No environment variables, secrets, keys, wallets, signatures, transactions,
+  payments, deployments or public posting were used. Required wall PNG outputs
+  and the expressly requested numbered JPEG remain untracked.
