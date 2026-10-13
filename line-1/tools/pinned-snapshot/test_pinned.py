@@ -103,8 +103,11 @@ class Tests(unittest.TestCase):
 
     def test_response_limits_and_envelope(self):
         for raw in (b' ' * (tool.LIMIT + 1), b'null', b'{"jsonrpc":"2.0","id":2,"result":"0x1"}'):
-            with patch.object(tool.urllib.request, 'urlopen') as network:
-                network.return_value.__enter__.return_value.read.return_value = raw
+            with patch.object(tool.urllib.request, 'build_opener') as network:
+                response = network.return_value.open.return_value.__enter__.return_value
+                response.status = 200
+                response.headers = {}
+                response.read.return_value = raw
                 with self.assertRaises((ValueError, RuntimeError)):
                     tool.public_read(tool.rpc.DEFAULT_RPC, 'eth_chainId', [])
 

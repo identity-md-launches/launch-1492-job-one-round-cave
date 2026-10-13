@@ -43,3 +43,15 @@ Final generation prompt: “A pigment insert for a prehistoric cave painting: tw
 ## Round 24 endpoint interoperability
 
 Capture and offline inspection now reuse `rpc-snapshot.validate_endpoint`: credential-free public ASCII HTTPS, or exact `http://127.0.0.1:<explicit-port>/rpc/1`. This supersedes the earlier HTTPS-only restriction while keeping all block, chain, supply and response checks. The companion `endpoint-policy` folder contains new offline regression tests and a fresh real pinned ZTO capture; its README records the live HTTPS success and the historical relay's connection refusal. Keep `rpc-snapshot` alongside this folder as before.
+
+## Round 32 native transport repair
+
+`public_read` now reuses the original reader's direct bounded `capture`
+transport: explicit empty proxy handling, no redirect following, HTTP 200 and
+identity encoding, its own User-Agent, strict JSON and an exact successful
+JSON-RPC envelope. Offline inspection now rejects ambiguous JSON as well.
+The CLI emits a fixed error rather than provider details. Snapshot fields,
+read order, block identity checks and the existing real example are unchanged.
+The sibling `pinned-transport-check` supplies a fresh real ZTO observation and
+68 offline checks across the four actual HTTP read stages. Its README gives
+the runnable command and retained observation details.

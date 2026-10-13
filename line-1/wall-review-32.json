@@ -1,0 +1,36 @@
+{
+  "source_record": 31,
+  "record_number": 32,
+  "source_sha256": "3948272fddee35d4c5d6fffa70ac9ba6fe22b091ce847c8f9f4edb9af7eb0c72",
+  "generated_sha256": "d1e447531315b00a95d4faddc2f71a64ac555a737f6e8410ad84a8b77e0bf5fe",
+  "wall_sha256": "b2c8c5ec72421f0b3767c81fcf8cdf254edcaf7b1daa3abdcd9073097f7ad708",
+  "png_dimensions": [
+    1254,
+    1254
+  ],
+  "png_format": "8-bit RGB PNG",
+  "png_bytes": 3836911,
+  "jpeg_dimensions": [
+    512,
+    512
+  ],
+  "jpeg_format": "baseline JPEG",
+  "jpeg_bytes": 61988,
+  "addition_rectangle": [
+    230,
+    775,
+    180,
+    64
+  ],
+  "changed_pixels": 2948,
+  "changed_pixels_outside_rectangle": 0,
+  "generation_tool": "image_gen.imagegen",
+  "visual_review": "Inspected final PNG and JPEG. Inherited Pepe retains heavy-lidded eyes, wide mouth, and four finger strokes plus an opposing thumb on each hand (five digits). No new hands or stencils. New worn charcoal stones and ring enclose an ochre pebble on vacant lower-left rock. Ancestor marks, rock, cracks, colors, lighting and framing are preserved. No visible letters, numbers, captions, signatures, logos, watermarks, borders, frames, real people or political/hateful symbols. Local visual review only.",
+  "new_hands_or_stencils": 0,
+  "unmet_visual_requirements": [
+    "Inherited cave rock is photographic-looking; preserved as required."
+  ],
+  "visual_limitations": [
+    "New pigment motif is subdued at thumbnail scale."
+  ]
+}

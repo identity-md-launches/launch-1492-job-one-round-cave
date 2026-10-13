@@ -22,16 +22,9 @@ def quantity(value):
 
 
 def public_read(endpoint, method, params):
-    rpc.validate_request(method, params)
-    rpc.validate_endpoint(endpoint)
-    body = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': params}).encode()
-    req = urllib.request.Request(endpoint, data=body, headers={
-        'Content-Type': 'application/json', 'User-Agent': 'Pepeolithic-Pinned-Snapshot/1.0'})
-    with urllib.request.urlopen(req, timeout=20) as response:
-        raw = response.read(LIMIT + 1)
-    if len(raw) > LIMIT:
-        raise ValueError('response exceeds 4 MiB')
-    return rpc.validate_response(json.loads(raw))
+    # Keep one transport policy for both original and pinned observations.
+    # capture validates before opening its explicit proxy-free, no-redirect opener.
+    return rpc.capture(method, params, endpoint)['result']
 
 
 def check_block(block, number=None):
@@ -121,11 +114,11 @@ def main():
             raw = sys.stdin.buffer.read(LIMIT + 1)
             if len(raw) > LIMIT:
                 raise ValueError('snapshot exceeds 4 MiB')
-            result = inspect(json.loads(raw))
+            result = inspect(rpc.strict_json(raw))
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
-    except (ValueError, TypeError, KeyError, RuntimeError, OSError, TimeoutError, RecursionError) as exc:
-        print('pinned-snapshot: ' + str(exc), file=sys.stderr)
+    except (ValueError, TypeError, KeyError, RuntimeError, OSError, TimeoutError, RecursionError):
+        print('pinned-snapshot: invalid snapshot, inconsistent response, or RPC failure', file=sys.stderr)
         return 1
 
 

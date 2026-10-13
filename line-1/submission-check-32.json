@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "goal_unchanged": true,
+  "older_records_unchanged": true,
+  "scope_checked": true,
+  "files_under_100kb_outside_artifacts": true,
+  "media": [
+    {
+      "path": "artifacts/line-1/wall-v13.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "format": "png",
+      "bytes": 3836911,
+      "decoded": true
+    },
+    {
+      "path": "dist/line-1/32.jpg",
+      "dimensions": [
+        512,
+        512
+      ],
+      "format": "mjpeg",
+      "bytes": 61988,
+      "decoded": true
+    }
+  ],
+  "record": "dist/line-1/32.json",
+  "wall_sha256": "b2c8c5ec72421f0b3767c81fcf8cdf254edcaf7b1daa3abdcd9073097f7ad708",
+  "offline_transport_checks": 68,
+  "targeted_tests": 38,
+  "original_transport_checks": 25,
+  "outputs_untracked": true,
+  "live_zto_block": "26180371",
+  "changed_pixels": 2948,
+  "changed_pixels_outside_rectangle": 0,
+  "unmet_visual_requirements": [
+    "Inherited cave rock is photographic-looking; preserved as required."
+  ],
+  "visual_limitations": [
+    "New pigment motif is subdued at thumbnail scale."
+  ]
+}
